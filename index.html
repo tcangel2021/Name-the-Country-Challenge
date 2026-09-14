@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌎 Flag Challenge: Around the World!</title>
+<!-- Google Fonts: Fredoka -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #4361ee;
+    --primary-dark: #3f37c9;
+    --secondary: #4cc9f0;
+    --success: #2ec4b6;
+    --danger: #e63946;
+    --warning: #ffb703;
+    --bg-main: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.85);
+    --card-border: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --team-a: #3b82f6;
+    --team-b: #ef4444;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+  }
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    user-select: none; 
+    -webkit-user-select: none; 
+  }
+  
+  body {
+    font-family: 'Fredoka', cursive, sans-serif;
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNQBj4-C_y-SO0gIJEaKEMIvfpn6z4xRte_GDcReYLeSneQaX1LDWk6Tc&s=10') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* Header & Top Bar */
+  header {
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--card-border);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .top-controls {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    font-family: 'Fredoka', cursive, sans-serif;
+    background: #334155;
+    color: var(--text-main);
+    border: 2px solid transparent;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+  }
+
+  .btn-primary { background: var(--primary); }
+  .btn-success { background: var(--success); color: #000; }
+  .btn-danger { background: var(--danger); }
+  .btn-warning { background: var(--warning); color: #000; }
+  .btn-lg { padding: 16px 28px; font-size: 1.25rem; border-radius: var(--radius-lg); }
+
+  /* Main Container */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .screen {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Image Flag Container Styling */
+  .flag-container {
+    width: 320px;
+    height: 213px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    border: 4px solid var(--card-border);
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+  }
+
+  .flag-container.large {
+    width: 420px;
+    height: 280px;
+  }
+
+  .flag-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Home Screen */
+  .home-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(135deg, #4cc9f0, #4361ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .home-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    text-align: center;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .menu-btn {
+    background: var(--card-bg);
+    border: 3px solid var(--card-border);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+
+  .menu-btn:hover {
+    border-color: var(--secondary);
+    transform: translateY(-4px);
+    background: rgba(38, 51, 77, 0.9);
+  }
+
+  .menu-btn .icon { font-size: 3rem; }
+  .menu-btn .label { font-size: 1.3rem; font-weight: 700; text-align: center; }
+
+  /* Info Bar */
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--card-border);
+    margin-bottom: 20px;
+  }
+
+  .info-item { display: flex; flex-direction: column; align-items: center; }
+  .info-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+  .info-value { font-size: 1.5rem; font-weight: 700; color: var(--secondary); }
+
+  /* Answer Options Grid */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 15px;
+  }
+
+  .option-btn {
+    font-family: 'Fredoka', cursive, sans-serif;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 3px solid var(--card-border);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option-btn .sub-text { font-size: 0.9rem; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(42, 56, 84, 0.9);
+  }
+
+  .option-btn.correct { background: var(--success) !important; color: #000 !important; border-color: var(--success) !important; }
+  .option-btn.wrong { background: var(--danger) !important; color: #fff !important; border-color: var(--danger) !important; }
+
+  /* Feedback Box */
+  .feedback-box {
+    min-height: 60px;
+    margin: 10px 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .badge-fast {
+    background: var(--warning);
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 1rem;
+    animation: pulse 0.5s infinite alternate;
+  }
+
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+  /* Flashcard Game B */
+  .flashcard {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 3px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 600px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .flashcard-text {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+    text-align: center;
+  }
+
+  .teacher-controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .teacher-controls .btn { flex: 1; padding: 18px; font-size: 1.2rem; }
+
+  /* Team Scoreboard */
+  .team-scoreboard {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    gap: 16px;
+    margin-bottom: 15px;
+  }
+
+  .team-card {
+    flex: 1;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 3px solid var(--card-border);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .team-card.team-a { border-color: var(--team-a); }
+  .team-card.team-b { border-color: var(--team-b); }
+
+  .team-card.active {
+    transform: scale(1.04);
+    box-shadow: 0 0 20px rgba(67, 97, 238, 0.4);
+  }
+
+  .team-card.team-a.active { background: rgba(59, 130, 246, 0.3); }
+  .team-card.team-b.active { background: rgba(239, 68, 68, 0.3); }
+
+  .team-name { font-size: 1.2rem; font-weight: 700; }
+  .team-score { font-size: 2.2rem; font-weight: 700; }
+
+  /* Scoreboard Screen */
+  .score-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 3px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .score-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+  }
+
+  .stat-box {
+    background: rgba(0,0,0,0.35);
+    padding: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Form Elements */
+  .settings-group {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+
+  .settings-group h3 { margin-bottom: 15px; color: var(--secondary); }
+
+  .setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .setting-row:last-child { margin-bottom: 0; }
+
+  select, input[type="text"] {
+    font-family: 'Fredoka', cursive, sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    border: 2px solid var(--card-border);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Modal Dialog */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-box {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 3px solid var(--card-border);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+  }
+
+  /* Confetti Canvas */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .home-title { font-size: 2.2rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .flag-container { width: 260px; height: 173px; }
+    .flag-container.large { width: 300px; height: 200px; }
+    .flashcard-text { font-size: 2.5rem; }
+    .teacher-controls .btn { padding: 15px; font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<header>
+  <div class="nav-title">🌎 Flag Challenge</div>
+  <div class="top-controls">
+    <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    <button class="btn" id="btn-sound-toggle" onclick="toggleSound()">🔊 Sound On</button>
+    <button class="btn btn-danger" onclick="confirmRestart()" id="nav-restart-btn" style="display:none;">↻ Restart</button>
+    <button class="btn" onclick="goHome()" id="nav-home-btn" style="display:none;">🏠 Home</button>
+  </div>
+</header>
+
+<main>
+  <!-- HOME SCREEN -->
+  <div id="screen-home" class="screen active">
+    <h1 class="home-title">🌎 Flag Challenge<br>Around the World!</h1>
+    <p class="home-subtitle">"How well do you know the world's flags?"</p>
+    
+    <div class="menu-grid">
+      <div class="menu-btn" onclick="startGameA()">
+        <span class="icon">🏳️</span>
+        <span class="label">A — Recognize the Flag</span>
+      </div>
+      <div class="menu-btn" onclick="startGameB()">
+        <span class="icon">🗣️</span>
+        <span class="label">B — Say the Country</span>
+      </div>
+      <div class="menu-btn" onclick="showTeamSetup()">
+        <span class="icon">🏆</span>
+        <span class="label">C — Team Challenge</span>
+      </div>
+      <div class="menu-btn" onclick="showScreen('screen-settings')">
+        <span class="icon">⚙️</span>
+        <span class="label">Settings</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS SCREEN -->
+  <div id="screen-settings" class="screen">
+    <h2>⚙️ Game Settings</h2>
+    <br>
+    <div class="settings-group">
+      <h3>🏳️ Game A — Recognize the Flag</h3>
+      <div class="setting-row">
+        <label>Question Timer:</label>
+        <select id="setting-game-a-timer">
+          <option value="10">10 seconds</option>
+          <option value="15" selected>15 seconds</option>
+          <option value="20">20 seconds</option>
+          <option value="25">25 seconds</option>
+          <option value="40">40 seconds</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>🗣️ Game B — Say the Country</h3>
+      <div class="setting-row">
+        <label>Time Limit:</label>
+        <select id="setting-game-b-timer">
+          <option value="60" selected>60 seconds</option>
+          <option value="80">80 seconds</option>
+          <option value="120">120 seconds</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>🏆 Team Challenge</h3>
+      <div class="setting-row">
+        <label>Question Timer:</label>
+        <select id="setting-team-timer">
+          <option value="10">10 seconds</option>
+          <option value="15" selected>15 seconds</option>
+          <option value="20">20 seconds</option>
+          <option value="25">25 seconds</option>
+          <option value="40">40 seconds</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:15px;">
+      <button class="btn btn-success btn-lg" onclick="saveSettings()">[ Apply Settings ]</button>
+      <button class="btn btn-lg" onclick="goHome()">[ Back ]</button>
+    </div>
+  </div>
+
+  <!-- GAME A SCREEN -->
+  <div id="screen-game-a" class="screen">
+    <div class="info-bar">
+      <div class="info-item">
+        <span class="info-label">Question</span>
+        <span class="info-value" id="game-a-q-count">1 / 10</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Time Remaining</span>
+        <span class="info-value" id="game-a-timer">15</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Score</span>
+        <span class="info-value" id="game-a-score">0</span>
+      </div>
+    </div>
+
+    <p style="font-size: 1.2rem; font-weight:600;">Look at the flag. Choose the correct country!</p>
+
+    <div class="flag-container" id="game-a-flag-box"></div>
+
+    <div class="feedback-box" id="game-a-feedback"></div>
+
+    <div class="options-grid" id="game-a-options"></div>
+
+    <div style="margin-top: 20px;">
+      <button class="btn btn-primary btn-lg" id="game-a-next-btn" onclick="nextQuestionGameA()" disabled>[ Next ➜ ]</button>
+    </div>
+  </div>
+
+  <!-- GAME A SCOREBOARD -->
+  <div id="screen-game-a-final" class="screen">
+    <h1 style="font-size:2.5rem; margin-bottom:10px;">🎉 Flag Challenge Complete! 🎉</h1>
+    <div class="score-card">
+      <div class="score-stats">
+        <div class="stat-box">
+          <div class="info-label">Correct Answers</div>
+          <div class="info-value" id="game-a-final-correct">0 / 10</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Total Points</div>
+          <div class="info-value" id="game-a-final-points">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Fast Answers</div>
+          <div class="info-value" id="game-a-final-fast">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Time Used</div>
+          <div class="info-value" id="game-a-final-time">0s</div>
+        </div>
+      </div>
+      <h3 style="color:var(--secondary); font-size: 1.5rem;" id="game-a-msg">Great job, World Traveler! 🌎</h3>
+    </div>
+    <div style="display:flex; gap:15px;">
+      <button class="btn btn-success btn-lg" onclick="startGameA()">[ Play Again ]</button>
+      <button class="btn btn-lg" onclick="goHome()">[ Home ]</button>
+    </div>
+  </div>
+
+  <!-- GAME B SCREEN -->
+  <div id="screen-game-b" class="screen">
+    <div class="info-bar">
+      <div class="info-item">
+        <span class="info-label">Time Limit</span>
+        <span class="info-value" id="game-b-timer">60s</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Correct</span>
+        <span class="info-value" id="game-b-correct-count">0</span>
+      </div>
+    </div>
+
+    <p style="font-size: 1.2rem; font-weight:600;">Look at the flag or country name. Say it!</p>
+
+    <div class="flashcard" id="game-b-card"></div>
+
+    <div class="feedback-box" id="game-b-feedback"></div>
+
+    <div class="teacher-controls">
+      <button class="btn btn-success" id="game-b-btn-correct" onclick="handleGameBAnswer(true)">✓ Correct</button>
+      <button class="btn btn-danger" id="game-b-btn-wrong" onclick="handleGameBAnswer(false)">✗ Wrong</button>
+      <button class="btn btn-primary" id="game-b-btn-next" onclick="nextItemGameB()" disabled>[ Next ➜ ]</button>
+    </div>
+  </div>
+
+  <!-- GAME B SCOREBOARD -->
+  <div id="screen-game-b-final" class="screen">
+    <h1 style="font-size:2.5rem; margin-bottom:10px;">🎉 Time's Up! 🎉</h1>
+    <h2 style="color:var(--text-muted); margin-bottom: 20px;">Say the Country Complete!</h2>
+    <div class="score-card">
+      <div class="score-stats">
+        <div class="stat-box">
+          <div class="info-label">Time Limit</div>
+          <div class="info-value" id="game-b-final-time">60s</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Correct Answers</div>
+          <div class="info-value" id="game-b-final-correct">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Questions Attempted</div>
+          <div class="info-value" id="game-b-final-attempted">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Accuracy</div>
+          <div class="info-value" id="game-b-final-accuracy">0%</div>
+        </div>
+      </div>
+      <h3 style="color:var(--secondary); font-size: 1.5rem;">🌎 You're a World Traveler!</h3>
+    </div>
+    <div style="display:flex; gap:15px;">
+      <button class="btn btn-success btn-lg" onclick="startGameB()">[ Play Again ]</button>
+      <button class="btn btn-lg" onclick="goHome()">[ Home ]</button>
+    </div>
+  </div>
+
+  <!-- TEAM CHALLENGE SETUP -->
+  <div id="screen-team-setup" class="screen">
+    <h2>🏆 Team Flag Challenge Setup</h2>
+    <br>
+    <div class="settings-group">
+      <div class="setting-row">
+        <label>Team A Name:</label>
+        <input type="text" id="team-a-name-input" value="Tigers" maxlength="12">
+      </div>
+      <div class="setting-row">
+        <label>Team B Name:</label>
+        <input type="text" id="team-b-name-input" value="Eagles" maxlength="12">
+      </div>
+      <div class="setting-row">
+        <label>Select Question Timer:</label>
+        <select id="team-setup-timer">
+          <option value="10">10 seconds</option>
+          <option value="15" selected>15 seconds</option>
+          <option value="20">20 seconds</option>
+          <option value="25">25 seconds</option>
+          <option value="40">40 seconds</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label>Number of Questions:</label>
+        <select id="team-setup-questions">
+          <option value="10" selected>10 questions</option>
+          <option value="15">15 questions</option>
+          <option value="20">20 questions</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex; gap:15px;">
+      <button class="btn btn-success btn-lg" onclick="startTeamGame()">[ Start Challenge ]</button>
+      <button class="btn btn-lg" onclick="goHome()">[ Back ]</button>
+    </div>
+  </div>
+
+  <!-- TEAM CHALLENGE SCREEN -->
+  <div id="screen-team-game" class="screen">
+    <div class="team-scoreboard">
+      <div class="team-card team-a" id="card-team-a">
+        <div class="team-name" id="display-team-a-name">Tigers</div>
+        <div class="team-score" id="display-team-a-score">0</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 10px;">
+        <span class="info-label">Round</span>
+        <span style="font-size:1.4rem; font-weight:700;" id="team-round-display">1 / 10</span>
+        <span class="info-label" style="margin-top:5px;">Timer</span>
+        <span style="font-size:1.4rem; font-weight:700; color:var(--secondary);" id="team-timer-display">15</span>
+      </div>
+      <div class="team-card team-b" id="card-team-b">
+        <div class="team-name" id="display-team-b-name">Eagles</div>
+        <div class="team-score" id="display-team-b-score">0</div>
+      </div>
+    </div>
+
+    <p style="font-size: 1.2rem; font-weight:600;">Current Turn: <span id="current-team-turn-label" style="color:var(--secondary);"></span></p>
+
+    <div class="flag-container" id="team-flag-box"></div>
+
+    <div class="feedback-box" id="team-feedback"></div>
+
+    <div class="options-grid" id="team-options"></div>
+
+    <div style="margin-top: 20px;">
+      <button class="btn btn-primary btn-lg" id="team-next-btn" onclick="nextQuestionTeam()" disabled>[ Next ➜ ]</button>
+    </div>
+  </div>
+
+  <!-- TEAM CHALLENGE FINAL SCOREBOARD -->
+  <div id="screen-team-final" class="screen">
+    <h1 style="font-size:2.5rem; margin-bottom:10px;">🎉 Challenge Complete! 🎉</h1>
+    <div class="score-card">
+      <h2 style="color:var(--text-muted); margin-bottom:15px;">🏆 Final Score</h2>
+      <div style="display:flex; justify-content:space-around; align-items:center; margin-bottom:20px;">
+        <div>
+          <div style="font-size:1.5rem; font-weight:700; color:var(--team-a);" id="final-team-a-name">Tigers</div>
+          <div style="font-size:3rem; font-weight:700;" id="final-team-a-score">0</div>
+        </div>
+        <div style="font-size:2rem; font-weight:700; color:var(--text-muted);">VS</div>
+        <div>
+          <div style="font-size:1.5rem; font-weight:700; color:var(--team-b);" id="final-team-b-name">Eagles</div>
+          <div style="font-size:3rem; font-weight:700;" id="final-team-b-score">0</div>
+        </div>
+      </div>
+
+      <h1 id="team-winner-announcement" style="font-size:2.2rem; color:var(--warning); margin-bottom:20px;">Tigers Win!</h1>
+
+      <div class="score-stats">
+        <div class="stat-box">
+          <div class="info-label">Correct Answers</div>
+          <div class="info-value" style="font-size:1.1rem;" id="final-team-correct-stats">A: 0 | B: 0</div>
+        </div>
+        <div class="stat-box">
+          <div class="info-label">Fast Answers</div>
+          <div class="info-value" style="font-size:1.1rem;" id="final-team-fast-stats">A: 0 | B: 0</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; gap:15px;">
+      <button class="btn btn-success btn-lg" onclick="showTeamSetup()">[ Play Again ]</button>
+      <button class="btn btn-lg" onclick="goHome()">[ Home ]</button>
+    </div>
+  </div>
+</main>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="restart-modal">
+  <div class="modal-box">
+    <h2 style="margin-bottom:15px;">Restart the game?</h2>
+    <p style="color:var(--text-muted); margin-bottom:25px;">Current game progress will be lost.</p>
+    <div style="display:flex; justify-content:center; gap:15px;">
+      <button class="btn btn-danger" onclick="executeRestart()">[ Yes ]</button>
+      <button class="btn" onclick="closeRestartModal()">[ No ]</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   1. DATA & FLAG IMAGES
+   ========================================================================== */
+const COUNTRIES = [
+  {
+    id: "taiwan",
+    name: "Taiwan",
+    official: "Taiwan",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWGcsokEJ2uC8Tl-WKJXftSPWyISxeN9mCXbj7p89UqA&s=10"
+  },
+  {
+    id: "spain",
+    name: "Spain",
+    official: "Kingdom of Spain",
+    img: "https://cdn.britannica.com/36/4336-050-056AC114/Flag-Spain.jpg?w=1000"
+  },
+  {
+    id: "japan",
+    name: "Japan",
+    official: "Japan",
+    img: "https://t3.ftcdn.net/jpg/16/37/50/98/360_F_1637509829_d96pLVbbTkhS6FeP4oh9gJU14swqLLuB.jpg"
+  },
+  {
+    id: "india",
+    name: "India",
+    official: "Republic of India",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvUKXHISRhPz0t_kl9GkOJsZ3j6kKgR4Ub8uQa0t7kofQji_4loe0BBLxE&s=10"
+  },
+  {
+    id: "singapore",
+    name: "Singapore",
+    official: "Republic of Singapore",
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
+  },
+  {
+    id: "australia",
+    name: "Australia",
+    official: "Commonwealth of Australia",
+    img: "https://media.istockphoto.com/id/1092635968/vector/australia-flag.jpg?s=612x612&w=0&k=20&c=YEp_hCl7Ub0nteWFKh6HrZwSFzUh3xmEYWuJe-RRt5Y="
+  },
+  {
+    id: "usa",
+    name: "the USA",
+    official: "United States of America",
+    img: "https://g128store.com/cdn/shop/products/51359402093_bc6bdee63b_3k_34bd4a9b-056c-44e8-9efa-e67b537eff28_896x700.jpg?v=1673975406"
+  },
+  {
+    id: "uk",
+    name: "the UK",
+    official: "United Kingdom",
+    img: "https://cdn11.bigcommerce.com/s-js3pyr/images/stencil/608x608/products/7276/11999/United-Kingdom-Flag__71713.1784041000.jpg?c=2"
+  },
+  {
+    id: "india2",
+    name: "India",
+    official: "Republic of India",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo4AeZmHHlkVG8FoAi0ps0KC7Tc-wKZ8Ukiob4hjHo_w&s=10"
+  }
+];
+
+/* ==========================================================================
+   2. GLOBAL GAME CONFIG & STATE
+   ========================================================================== */
+let config = {
+  soundOn: true,
+  gameATimer: 15,
+  gameBTimer: 60,
+  teamTimer: 15,
+  teamQuestionsCount: 10
+};
+
+let gameState = {
+  activeScreen: "screen-home",
+  activeGame: null,
+  timerId: null,
+  timeRemaining: 0,
+  startTime: 0,
+  
+  gameA: {
+    qIndex: 0,
+    score: 0,
+    correctCount: 0,
+    fastCount: 0,
+    totalTimeUsed: 0,
+    currentCountry: null,
+    history: []
+  },
+  
+  gameB: {
+    correctCount: 0,
+    attemptedCount: 0,
+    currentCountry: null,
+    currentType: null
+  },
+  
+  team: {
+    nameA: "Tigers",
+    nameB: "Eagles",
+    scoreA: 0,
+    scoreB: 0,
+    correctA: 0,
+    correctB: 0,
+    fastA: 0,
+    fastB: 0,
+    currentTeam: 'A',
+    qIndex: 0,
+    totalQuestions: 10,
+    currentCountry: null
+  }
+};
+
+/* ==========================================================================
+   3. FULLSCREEN TOGGLE
+   ========================================================================== */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.log(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+}
+
+/* ==========================================================================
+   4. AUDIO & VOICE SYNTHESIS
+   ========================================================================== */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let preferredVoice = null;
+
+function loadVoices() {
+  if (!('speechSynthesis' in window)) return;
+  const voices = window.speechSynthesis.getVoices();
+  preferredVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB') || voices.find(v => v.lang.startsWith('en')) || null;
+}
+
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new AudioContext();
+  }
+}
+
+function playSound(type) {
+  if (!config.soundOn) return;
+  initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  if (type === 'correct') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  } else if (type === 'fast') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.1);
+    osc.frequency.setValueAtTime(783.99, now + 0.2);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  } else if (type === 'wrong') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.linearRampToValueAtTime(130.81, now + 0.25);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  } else if (type === 'click') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, now);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+    osc.start(now);
+    osc.stop(now + 0.05);
+  }
+}
+
+function speakVoice(text) {
+  if (!config.soundOn || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  if (preferredVoice) {
+    utterance.voice = preferredVoice;
+  }
+  utterance.lang = 'en-US';
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  window.speechSynthesis.speak(utterance);
+}
+
+function toggleSound() {
+  config.soundOn = !config.soundOn;
+  const btn = document.getElementById('btn-sound-toggle');
+  btn.textContent = config.soundOn ? "🔊 Sound On" : "🔇 Sound Off";
+}
+
+/* ==========================================================================
+   5. NAVIGATION & MODALS
+   ========================================================================== */
+function showScreen(screenId) {
+  stopTimer();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  gameState.activeScreen = screenId;
+
+  const isHome = screenId === 'screen-home';
+  const isSettings = screenId === 'screen-settings';
+  
+  document.getElementById('nav-home-btn').style.display = (isHome || isSettings) ? 'none' : 'inline-flex';
+  document.getElementById('nav-restart-btn').style.display = (isHome || isSettings) ? 'none' : 'inline-flex';
+}
+
+function goHome() {
+  playSound('click');
+  showScreen('screen-home');
+}
+
+function confirmRestart() {
+  playSound('click');
+  document.getElementById('restart-modal').style.display = 'flex';
+}
+
+function closeRestartModal() {
+  playSound('click');
+  document.getElementById('restart-modal').style.display = 'none';
+}
+
+function executeRestart() {
+  closeRestartModal();
+  if (gameState.activeScreen.includes('game-a')) startGameA();
+  else if (gameState.activeScreen.includes('game-b')) startGameB();
+  else if (gameState.activeScreen.includes('team')) showTeamSetup();
+}
+
+function saveSettings() {
+  playSound('click');
+  config.gameATimer = parseInt(document.getElementById('setting-game-a-timer').value);
+  config.gameBTimer = parseInt(document.getElementById('setting-game-b-timer').value);
+  config.teamTimer = parseInt(document.getElementById('setting-team-timer').value);
+  alert("Settings Applied!");
+  goHome();
+}
+
+/* ==========================================================================
+   6. TIMERS
+   ========================================================================== */
+function startTimer(duration, onTick, onComplete) {
+  stopTimer();
+  gameState.timeRemaining = duration;
+  gameState.startTime = Date.now();
+  onTick(gameState.timeRemaining);
+
+  gameState.timerId = setInterval(() => {
+    gameState.timeRemaining--;
+    onTick(gameState.timeRemaining);
+
+    if (gameState.timeRemaining <= 0) {
+      stopTimer();
+      onComplete();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (gameState.timerId) {
+    clearInterval(gameState.timerId);
+    gameState.timerId = null;
+  }
+}
+
+function getElapsedSeconds() {
+  return Math.round((Date.now() - gameState.startTime) / 1000);
+}
+
+/* ==========================================================================
+   7. HELPER UTILITIES
+   ========================================================================== */
+function getRandomItem(array, excludeItem = null) {
+  const filtered = array.filter(item => item !== excludeItem);
+  return filtered[Math.floor(Math.random() * filtered.length)];
+}
+
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function generateOptions(correctCountry) {
+  const options = [correctCountry];
+  while (options.length < 4) {
+    const randomC = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
+    if (!options.some(o => o.name === randomC.name)) {
+      options.push(randomC);
+    }
+  }
+  return shuffleArray(options);
+}
+
+/* ==========================================================================
+   8. GAME A — RECOGNIZE THE FLAG
+   ========================================================================== */
+function startGameA() {
+  playSound('click');
+  gameState.activeGame = 'A';
+  gameState.gameA = {
+    qIndex: 0,
+    score: 0,
+    correctCount: 0,
+    fastCount: 0,
+    totalTimeUsed: 0,
+    currentCountry: null,
+    history: []
+  };
+  showScreen('screen-game-a');
+  nextQuestionGameA();
+}
+
+function nextQuestionGameA() {
+  playSound('click');
+  if (gameState.gameA.qIndex >= 10) {
+    showGameAFinal();
+    return;
+  }
+
+  gameState.gameA.qIndex++;
+  document.getElementById('game-a-q-count').textContent = `${gameState.gameA.qIndex} / 10`;
+  document.getElementById('game-a-score').textContent = gameState.gameA.score;
+  document.getElementById('game-a-feedback').innerHTML = '';
+  document.getElementById('game-a-next-btn').disabled = true;
+
+  const lastCountry = gameState.gameA.history[gameState.gameA.history.length - 1];
+  const country = getRandomItem(COUNTRIES, lastCountry);
+  gameState.gameA.currentCountry = country;
+  gameState.gameA.history.push(country);
+
+  document.getElementById('game-a-flag-box').innerHTML = `<img src="${country.img}" alt="Flag of ${country.name}">`;
+
+  const options = generateOptions(country);
+  const optionsGrid = document.getElementById('game-a-options');
+  optionsGrid.innerHTML = '';
+
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span>${opt.name}</span><span class="sub-text">${opt.official !== opt.name ? opt.official : ''}</span>`;
+    btn.onclick = () => handleGameAAnswer(opt, btn);
+    optionsGrid.appendChild(btn);
+  });
+
+  startTimer(config.gameATimer, 
+    (timeLeft) => {
+      document.getElementById('game-a-timer').textContent = timeLeft;
+    }, 
+    () => {
+      handleGameATimeout();
+    }
+  );
+}
+
+function handleGameAAnswer(selectedCountry, btnElement) {
+  stopTimer();
+  const timeTaken = getElapsedSeconds();
+  gameState.gameA.totalTimeUsed += timeTaken;
+
+  const buttons = document.querySelectorAll('#game-a-options .option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const isCorrect = selectedCountry.name === gameState.gameA.currentCountry.name;
+  const feedbackEl = document.getElementById('game-a-feedback');
+
+  if (isCorrect) {
+    gameState.gameA.correctCount++;
+    const isFast = timeTaken <= 3;
+    const points = isFast ? 3 : 2;
+    gameState.gameA.score += points;
+
+    btnElement.classList.add('correct');
+
+    if (isFast) {
+      gameState.gameA.fastCount++;
+      playSound('fast');
+      speakVoice("Fast! Excellent!");
+      feedbackEl.innerHTML = `<span class="badge-fast">⚡ Fast!</span> ⭐ Excellent! +3 Points!`;
+    } else {
+      playSound('correct');
+      speakVoice("Good job!");
+      feedbackEl.innerHTML = `⭐ Good job! +2 Points!`;
+    }
+  } else {
+    playSound('wrong');
+    speakVoice("Not quite!");
+    btnElement.classList.add('wrong');
+    buttons.forEach(b => {
+      if (b.textContent.includes(gameState.gameA.currentCountry.name)) {
+        b.classList.add('correct');
+      }
+    });
+    feedbackEl.innerHTML = `❌ Not quite! The answer is <u style="margin-left:8px;">${gameState.gameA.currentCountry.name}</u>.`;
+  }
+
+  document.getElementById('game-a-score').textContent = gameState.gameA.score;
+  document.getElementById('game-a-next-btn').disabled = false;
+}
+
+function handleGameATimeout() {
+  gameState.gameA.totalTimeUsed += config.gameATimer;
+  playSound('wrong');
+  speakVoice("Time's up!");
+
+  const buttons = document.querySelectorAll('#game-a-options .option-btn');
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.textContent.includes(gameState.gameA.currentCountry.name)) {
+      b.classList.add('correct');
+    }
+  });
+
+  document.getElementById('game-a-feedback').innerHTML = `⏰ Time's up! The answer is <u>${gameState.gameA.currentCountry.name}</u>.`;
+  document.getElementById('game-a-next-btn').disabled = false;
+}
+
+function showGameAFinal() {
+  showScreen('screen-game-a-final');
+  triggerConfetti();
+
+  document.getElementById('game-a-final-correct').textContent = `${gameState.gameA.correctCount} / 10`;
+  document.getElementById('game-a-final-points').textContent = gameState.gameA.score;
+  document.getElementById('game-a-final-fast').textContent = gameState.gameA.fastCount;
+  
+  const mins = Math.floor(gameState.gameA.totalTimeUsed / 60);
+  const secs = gameState.gameA.totalTimeUsed % 60;
+  document.getElementById('game-a-final-time').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+/* ==========================================================================
+   9. GAME B — SAY THE COUNTRY
+   ========================================================================== */
+function startGameB() {
+  playSound('click');
+  gameState.activeGame = 'B';
+  gameState.gameB = {
+    correctCount: 0,
+    attemptedCount: 0,
+    currentCountry: null,
+    currentType: null
+  };
+  showScreen('screen-game-b');
+
+  startTimer(config.gameBTimer, 
+    (timeLeft) => {
+      document.getElementById('game-b-timer').textContent = `${timeLeft}s`;
+    }, 
+    () => {
+      showGameBFinal();
+    }
+  );
+
+  nextItemGameB();
+}
+
+function nextItemGameB() {
+  playSound('click');
+  document.getElementById('game-b-feedback').innerHTML = '';
+  document.getElementById('game-b-btn-correct').disabled = false;
+  document.getElementById('game-b-btn-wrong').disabled = false;
+  document.getElementById('game-b-btn-next').disabled = true;
+
+  const country = getRandomItem(COUNTRIES, gameState.gameB.currentCountry);
+  const type = Math.random() > 0.5 ? 'flag' : 'name';
+  gameState.gameB.currentCountry = country;
+  gameState.gameB.currentType = type;
+
+  const card = document.getElementById('game-b-card');
+  if (type === 'flag') {
+    card.innerHTML = `<div class="flag-container large"><img src="${country.img}" alt="Flag of ${country.name}"></div>`;
+  } else {
+    card.innerHTML = `<div class="flashcard-text">${country.name}</div>`;
+  }
+}
+
+function handleGameBAnswer(isCorrect) {
+  gameState.gameB.attemptedCount++;
+  document.getElementById('game-b-btn-correct').disabled = true;
+  document.getElementById('game-b-btn-wrong').disabled = true;
+  document.getElementById('game-b-btn-next').disabled = false;
+
+  const feedbackEl = document.getElementById('game-b-feedback');
+
+  if (isCorrect) {
+    gameState.gameB.correctCount++;
+    playSound('correct');
+    speakVoice("Good job!");
+    feedbackEl.innerHTML = `<span style="color:var(--success)">⭐ +1 Correct!</span>`;
+  } else {
+    playSound('wrong');
+    speakVoice("Let's try the next one!");
+    feedbackEl.innerHTML = `<span style="color:var(--danger)">Let's try the next one!</span>`;
+  }
+
+  document.getElementById('game-b-correct-count').textContent = gameState.gameB.correctCount;
+}
+
+function showGameBFinal() {
+  showScreen('screen-game-b-final');
+  triggerConfetti();
+
+  const correct = gameState.gameB.correctCount;
+  const attempted = gameState.gameB.attemptedCount;
+  const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+
+  document.getElementById('game-b-final-time').textContent = `${config.gameBTimer}s`;
+  document.getElementById('game-b-final-correct').textContent = correct;
+  document.getElementById('game-b-final-attempted').textContent = attempted;
+  document.getElementById('game-b-final-accuracy').textContent = `${accuracy}%`;
+}
+
+/* ==========================================================================
+   10. TEAM CHALLENGE
+   ========================================================================== */
+function showTeamSetup() {
+  playSound('click');
+  showScreen('screen-team-setup');
+}
+
+function startTeamGame() {
+  playSound('click');
+  gameState.activeGame = 'TEAM';
+  const nameA = document.getElementById('team-a-name-input').value.trim() || "Tigers";
+  const nameB = document.getElementById('team-b-name-input').value.trim() || "Eagles";
+
+  gameState.team = {
+    nameA: nameA,
+    nameB: nameB,
+    scoreA: 0,
+    scoreB: 0,
+    correctA: 0,
+    correctB: 0,
+    fastA: 0,
+    fastB: 0,
+    currentTeam: 'A',
+    qIndex: 0,
+    totalQuestions: parseInt(document.getElementById('team-setup-questions').value),
+    currentCountry: null
+  };
+
+  config.teamTimer = parseInt(document.getElementById('team-setup-timer').value);
+
+  document.getElementById('display-team-a-name').textContent = gameState.team.nameA;
+  document.getElementById('display-team-b-name').textContent = gameState.team.nameB;
+
+  showScreen('screen-team-game');
+  nextQuestionTeam();
+}
+
+function nextQuestionTeam() {
+  playSound('click');
+  if (gameState.team.qIndex >= gameState.team.totalQuestions) {
+    showTeamFinal();
+    return;
+  }
+
+  gameState.team.qIndex++;
+  
+  const isTeamA = gameState.team.currentTeam === 'A';
+  document.getElementById('card-team-a').classList.toggle('active', isTeamA);
+  document.getElementById('card-team-b').classList.toggle('active', !isTeamA);
+  
+  const activeName = isTeamA ? gameState.team.nameA : gameState.team.nameB;
+  const activeColor = isTeamA ? 'var(--team-a)' : 'var(--team-b)';
+  
+  const turnLabel = document.getElementById('current-team-turn-label');
+  turnLabel.textContent = activeName;
+  turnLabel.style.color = activeColor;
+
+  document.getElementById('display-team-a-score').textContent = gameState.team.scoreA;
+  document.getElementById('display-team-b-score').textContent = gameState.team.scoreB;
+  document.getElementById('team-round-display').textContent = `${gameState.team.qIndex} / ${gameState.team.totalQuestions}`;
+  document.getElementById('team-feedback').innerHTML = '';
+  document.getElementById('team-next-btn').disabled = true;
+
+  const country = getRandomItem(COUNTRIES, gameState.team.currentCountry);
+  gameState.team.currentCountry = country;
+
+  document.getElementById('team-flag-box').innerHTML = `<img src="${country.img}" alt="Flag of ${country.name}">`;
+
+  const options = generateOptions(country);
+  const optionsGrid = document.getElementById('team-options');
+  optionsGrid.innerHTML = '';
+
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span>${opt.name}</span>`;
+    btn.onclick = () => handleTeamAnswer(opt, btn);
+    optionsGrid.appendChild(btn);
+  });
+
+  startTimer(config.teamTimer, 
+    (timeLeft) => {
+      document.getElementById('team-timer-display').textContent = timeLeft;
+    }, 
+    () => {
+      handleTeamTimeout();
+    }
+  );
+}
+
+function handleTeamAnswer(selectedCountry, btnElement) {
+  stopTimer();
+  const timeTaken = getElapsedSeconds();
+
+  const buttons = document.querySelectorAll('#team-options .option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const isCorrect = selectedCountry.name === gameState.team.currentCountry.name;
+  const feedbackEl = document.getElementById('team-feedback');
+  const isTeamA = gameState.team.currentTeam === 'A';
+
+  if (isCorrect) {
+    const isFast = timeTaken <= 3;
+    const points = isFast ? 3 : 2;
+
+    if (isTeamA) {
+      gameState.team.scoreA += points;
+      gameState.team.correctA++;
+      if (isFast) gameState.team.fastA++;
+    } else {
+      gameState.team.scoreB += points;
+      gameState.team.correctB++;
+      if (isFast) gameState.team.fastB++;
+    }
+
+    btnElement.classList.add('correct');
+
+    if (isFast) {
+      playSound('fast');
+      speakVoice("Fast bonus!");
+      feedbackEl.innerHTML = `<span class="badge-fast">⚡ Fast Bonus!</span> ⭐ +3 Points!`;
+    } else {
+      playSound('correct');
+      speakVoice("Correct!");
+      feedbackEl.innerHTML = `⭐ Correct! +2 Points!`;
+    }
+  } else {
+    playSound('wrong');
+    speakVoice("Not quite!");
+    btnElement.classList.add('wrong');
+    buttons.forEach(b => {
+      if (b.textContent.includes(gameState.team.currentCountry.name)) {
+        b.classList.add('correct');
+      }
+    });
+    feedbackEl.innerHTML = `❌ Not quite! Correct: <u>${gameState.team.currentCountry.name}</u>.`;
+  }
+
+  document.getElementById('display-team-a-score').textContent = gameState.team.scoreA;
+  document.getElementById('display-team-b-score').textContent = gameState.team.scoreB;
+
+  gameState.team.currentTeam = isTeamA ? 'B' : 'A';
+  document.getElementById('team-next-btn').disabled = false;
+}
+
+function handleTeamTimeout() {
+  playSound('wrong');
+  speakVoice("Time's up!");
+
+  const buttons = document.querySelectorAll('#team-options .option-btn');
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.textContent.includes(gameState.team.currentCountry.name)) {
+      b.classList.add('correct');
+    }
+  });
+
+  document.getElementById('team-feedback').innerHTML = `⏰ Time's up! Correct: <u>${gameState.team.currentCountry.name}</u>.`;
+  
+  gameState.team.currentTeam = gameState.team.currentTeam === 'A' ? 'B' : 'A';
+  document.getElementById('team-next-btn').disabled = false;
+}
+
+function showTeamFinal() {
+  showScreen('screen-team-final');
+  triggerConfetti();
+
+  const scoreA = gameState.team.scoreA;
+  const scoreB = gameState.team.scoreB;
+  const nameA = gameState.team.nameA;
+  const nameB = gameState.team.nameB;
+
+  document.getElementById('final-team-a-name').textContent = nameA;
+  document.getElementById('final-team-a-score').textContent = scoreA;
+  document.getElementById('final-team-b-name').textContent = nameB;
+  document.getElementById('final-team-b-score').textContent = scoreB;
+
+  const announce = document.getElementById('team-winner-announcement');
+  if (scoreA > scoreB) {
+    announce.textContent = `🏆 ${nameA} Win! 🏆`;
+    announce.style.color = 'var(--team-a)';
+  } else if (scoreB > scoreA) {
+    announce.textContent = `🏆 ${nameB} Win! 🏆`;
+    announce.style.color = 'var(--team-b)';
+  } else {
+    announce.textContent = `🤝 It's a Tie! 🤝`;
+    announce.style.color = 'var(--warning)';
+  }
+
+  document.getElementById('final-team-correct-stats').textContent = `${nameA}: ${gameState.team.correctA} | ${nameB}: ${gameState.team.correctB}`;
+  document.getElementById('final-team-fast-stats').textContent = `${nameA}: ${gameState.team.fastA} | ${nameB}: ${gameState.team.fastB}`;
+}
+
+/* ==========================================================================
+   11. CONFETTI ANIMATION SYSTEM
+   ========================================================================== */
+function triggerConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = Array.from({length: 80}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    size: Math.random() * 10 + 5,
+    color: ['#4361ee', '#4cc9f0', '#2ec4b6', '#ffb703', '#e63946'][Math.floor(Math.random() * 5)],
+    vx: (Math.random() - 0.5) * 4,
+    vy: Math.random() * 4 + 2,
+    rotation: Math.random() * 360,
+    vRot: (Math.random() - 0.5) * 5
+  }));
+
+  let animationFrame;
+  let startTime = Date.now();
+
+  function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.vRot;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+    });
+
+    if (Date.now() - startTime < 3500) {
+      animationFrame = requestAnimationFrame(render);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      cancelAnimationFrame(animationFrame);
+    }
+  }
+
+  render();
+}
+</script>
+</body>
+</html>
